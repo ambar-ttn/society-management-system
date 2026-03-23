@@ -58,48 +58,6 @@ export const getDashboard = async (req, res) => {
 
 
 
-/*  
-{
-  "success": true,
-  "dashboard": {
-    "flats": [
-      { "id": 3, "flat_number": "A103", "flat_type": "2BHK" }
-    ],
-    "total_flats": 1,
-    "current_month": {
-      "month": 3,
-      "year": 2024,
-      "status": [
-        { "flat_number": "A103", "status": "Pending", "amount": 1500 }
-      ]
-    },
-    "subscriptions": [...],
-    "pending_amount": 1500,
-    "recent_payments": [...],
-    "notifications": [...],
-    "unread_count": 2
-  }
-}
-
-*/
-/* 
-Jo bhi column names tu SELECT me likhega
-woh har row ke object me key ban jaate hain
-
- Example 1 (simple)
-SELECT id, name FROM users;
-
-Result:
-
-{
-  rows: [
-    { id: 1, name: "Ambar" },
-    { id: 2, name: "Rahul" }
-  ]
-}
-*/
-
-
 
 export const DashboardmangtaHai = async(req,res)=>{
        try{

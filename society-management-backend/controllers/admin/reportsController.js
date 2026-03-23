@@ -55,7 +55,6 @@ export const getReport = async (req,res)=>{
     }
 
     // NORMAL JSON RESPONSE
-    // ================
     res.json({
       success:true,
       report:reportData

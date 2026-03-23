@@ -37,20 +37,19 @@ export default function ResidentGuard({ children }) {
     return null;
   } // phle return null krwaidya 
 
+/*
+useEffect performs the redirect, but useEffect runs after the component renders.
+So if we do not add this condition, the protected page may appear on the screen
+for a brief moment before the redirect happens.
 
-  /* 
-useEffect redirect karta hai, lekin useEffect render ke baad chalta hai.
-Isliye agar hum ye condition na lagaye to ek second ke liye protected page screen pe dikh sakta hai.
+Purpose of this condition:
+If the user does not exist or the user is not a resident
+→ Do not render the page
+→ Return blank
+→ useEffect will handle the redirect
 
-Is line ka kaam:
-Agar user nahi hai ya resident nahi hai
-→ Page render hi mat karo
-→ Blank return karo
-→ useEffect redirect kar dega
-One-line summary (best):
-
-Ye condition protected page ko render hone se rokne ke liye hai jab tak confirm na ho jaye ki user authorized hai.
-
-  */
+One-line summary:
+This condition prevents the protected page from rendering until we confirm that the user is authorized.
+*/
   return children;
 }

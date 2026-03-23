@@ -3,11 +3,11 @@ const router = express.Router();
 import { auth } from "../../middlewares/auth.js";
 import pool from "../../config/db.js";
 
-// Save OneSignal ID - Logged in user ka apna ID save karega
+// Save OneSignal ID - 
 router.post("/save-onesignal-id", auth, async (req, res) => {
   try {
     const { onesignal_id } = req.body;
-    const user_id = req.user.id; // Auth middleware se mil raha hai
+    const user_id = req.user.id; // auth middleware will give it
 
     if (!onesignal_id) {
       return res.status(400).json({ 

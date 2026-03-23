@@ -69,7 +69,7 @@ const flatService = {
         return result.rows[0];
     },
 
-    // Soft delete flat (deactivate)
+    // Soft delete flat (deactivate soft delete)
     deactivateFlat: async (id) => {
         await pool.query(
             "UPDATE flats SET is_active=false WHERE id=$1",
@@ -86,7 +86,7 @@ const flatService = {
         return result.rows[0];
     },
 
-    // Get flats by owner ID (already exists maybe)
+    // Get flats by owner ID 
     getFlatsByOwnerId: async (userId) => {
         const result = await pool.query(
             `SELECT id, flat_number, flat_type 

@@ -29,4 +29,4 @@ return {login , logout , user , loading , token};
 
 }
 
-//Matlab ye frontend authentication manager hai.
+//frontend authentication manager hai.

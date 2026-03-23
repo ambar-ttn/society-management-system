@@ -41,33 +41,3 @@ cron.schedule("0 0 1 * *", async () => {
 });
 
 
-// Har mahine ki 1 tareekh ko 12:00 AM par run hoga
-
-//Har mahine ki 1 tareekh ko 12:00 AM par run hoga
-
-/*
-
-0 0 1 * *
-
-Meaning:
-
-0 minute
-0 hour
-1st day of month
-any month
-any weekday(koi bhi weekday ho)
-
-➡️ Har mahine ki 1 tareekh ko 12:00 AM par run hoga
-0 0 1 * *
-
-Meaning:
-
-0 minute
-0 hour
-1st day of month
-every month
-every weekday
-
-➡️ Har mahine ki 1 tareekh ko 12:00 AM par run hoga
-
-*/

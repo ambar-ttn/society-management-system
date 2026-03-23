@@ -35,7 +35,7 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.json()); // json request body - parser (parsing --> basically extracting the data from request body..)
+app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser()); 
 

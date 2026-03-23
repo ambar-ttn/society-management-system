@@ -74,7 +74,7 @@ const authService = {
         return userResponse;
     },
 
-    // Update OneSignal ID (if you need this functionality)
+    // Update OneSignal ID 
     updateOneSignalId: async (userId, onesignalId) => {
         await pool.query(
             "UPDATE users SET onesignal_id = $1 WHERE id = $2",

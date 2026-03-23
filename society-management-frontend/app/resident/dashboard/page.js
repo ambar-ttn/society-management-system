@@ -201,4 +201,3 @@ useEffect(() => {
   );
 }
 
-//Horizontal scroll enable karta hai jab content container se bada ho jaye. overlfow-x-auto

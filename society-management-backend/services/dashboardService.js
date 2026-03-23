@@ -137,7 +137,7 @@ const dashboardService = {
             [limit]
         );
         return result.rows;
-    },// in frontend we have made dat wit repect to selected year yahan se to poota bhejre 
+    },// in frontend we have made it with repect to selected year here we send entire data
 
     // Get recent payments for admin
     getAdminRecentPayments: async (limit = 5) => {

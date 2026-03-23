@@ -1,4 +1,3 @@
-import pool from "../../config/db.js"; // This path is correct for a controller in subfolder
 import paymentService from "../../services/paymentService.js";
 
 export const makePayment = async (req,res)=>{

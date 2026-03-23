@@ -155,7 +155,6 @@ const chartData =
 );
 }
 
-// stroke is for color of the line stroke = line ka color
 
 /* 
 barchart expects this type data 

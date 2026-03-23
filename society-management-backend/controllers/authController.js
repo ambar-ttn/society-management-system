@@ -203,7 +203,7 @@ export const updateOneSignalId = async (req, res) => {
       [onesignal_id, userId]
     );
 
-    console.log(`✅ OneSignal ID saved for user ${userId}: ${onesignal_id}`);
+    console.log(` OneSignal ID saved for user ${userId}: ${onesignal_id}`);
 
     res.status(200).json({
       success: true,

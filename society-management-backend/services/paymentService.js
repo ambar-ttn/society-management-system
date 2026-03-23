@@ -1,7 +1,7 @@
 import pool from "../config/db.js";
 
 const paymentService = {
-    // ========== RESIDENT METHODS ==========
+    //  RESIDENT METHODS 
     
     // verify that flat belongs to user
     verifyFlatOwnership: async (flat_id, userId) => {
@@ -45,7 +45,7 @@ const paymentService = {
         );
     },
 
-    // ========== ADMIN METHODS ==========
+    //  ADMIN METHODS 
 
     // check if flat exists
     checkFlatExists: async (flat_id) => {

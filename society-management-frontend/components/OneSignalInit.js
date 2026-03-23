@@ -21,7 +21,7 @@ export default function OneSignalInit() {
         }
 
         if (!window.OneSignal) {
-          console.error("❌ OneSignal SDK not loaded.");
+          console.error("OneSignal SDK not loaded.");
           return;
         }
 
@@ -33,24 +33,24 @@ export default function OneSignalInit() {
             appId: process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID,
             allowLocalhostAsSecureOrigin: true,
           });
-          console.log("✅ OneSignal initialized");
+          console.log("OneSignal initialized");
         } catch (initErr) {
           console.log("ℹ️ OneSignal already initialized, continuing...");
         }
 
-        // ✅ KEY: Link this subscription to your DB user ID as external_id
+        //  KEY: Link this subscription to your DB user ID as external_id
         // This lets backend target by include_external_user_ids: [user.id]
         // which works reliably on the v1 /notifications API
         try {
           await OneSignal.login(String(user.id));
-          console.log("✅ OneSignal external_id set to:", user.id);
+          console.log(" OneSignal external_id set to:", user.id);
         } catch (loginErr) {
-          console.warn("⚠️ OneSignal.login() failed:", loginErr.message);
+          console.warn(" OneSignal.login() failed:", loginErr.message);
         }
 
         // Show notification even when tab is in foreground
         OneSignal.Notifications.addEventListener("foregroundWillDisplay", (event) => {
-          console.log("🔔 Foreground notification received:", event.notification);
+          console.log(" Foreground notification received:", event.notification);
           event.notification.display();
         });
 
@@ -81,11 +81,11 @@ export default function OneSignalInit() {
           onesignal_id: playerId,
         });
 
-        console.log("✅ Player ID saved in DB for user:", user.id);
+        console.log(" Player ID saved in DB for user:", user.id);
         savedForUserId.current = user.id;
 
       } catch (err) {
-        console.error("❌ OneSignal error:", err);
+        console.error(" OneSignal error:", err);
       }
     }
 

@@ -11,7 +11,7 @@ const sendPushNotification = async (title, message, user_id = null) => {
  
     if (user_id) {
       payload.include_external_user_ids = [String(user_id)];
-      // ✅ Required when using include_external_user_ids
+      //  Required when using include_external_user_ids
       // target_channel alone does NOT work with this targeting method
       payload.channel_for_external_user_ids = "push";
     } else {
@@ -31,18 +31,18 @@ const sendPushNotification = async (title, message, user_id = null) => {
       }
     );
  
-    console.log("✅ OneSignal Response:", response.data);
+    console.log(" OneSignal Response:", response.data);
  
     if (response.data?.recipients === 0) {
       console.warn(
-        "⚠️ 0 recipients — resident needs to log out and back in so OneSignal.login() links their external_id."
+        " 0 recipients — resident needs to log out and back in so OneSignal.login() links their external_id."
       );
     }
  
     return response.data;
  
   } catch (error) {
-    console.error("❌ Push error:", error.response?.data || error.message);
+    console.error("Push error:", error.response?.data || error.message);
   }
 };
  

@@ -41,7 +41,7 @@ console.log("TOKEN EXP:", dec?.exp);
   exp: 1773506449
 }
     
-decoded kuch aisa dikhta haiii biirrrrrorooo
+decoded token be like
     */
   }
   catch(error){
@@ -100,33 +100,3 @@ export const isResident = (req,res,next)=>{
 }
 
 
-// Note: There's a duplicate isAdmin function here. The second one will override the first.
-// You should remove one of them. I've kept both but the second will be the one exported.
-export const isAdminDuplicate = async (req,res,next)=>{
-  try{
-    const role = req.user.role ;
-    
-  if(role!=='admin')
-  {
-    return res.status(401).json({
-      success:false,
-      message:"You are not authorized as it for admin only."
-    })
-  }
- 
-  next();
-  }
-
-
-  catch(err){
-     return res.status(401).json({
-      success:false,
-      message:"Error in authentication middleware .."
-    })
- 
-  }
-  
-
-
-
-}

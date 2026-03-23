@@ -57,24 +57,8 @@ export default function LoginPage() {
 
 
 
-  /* 
-Browser kya karta:
 
-Submit
-→ Form submit
-→ Page reload
-→ Saari React state reset
-
-Isliye React me hum likhte:
-
-e.preventDefault();
-
-Matlab:
-
-Default browser behavior mat karo
-Page reload mat karo
-Main JS se handle karunga  
-  */
+  
   return (
     <AuthCard title="Welcome Back">
 
@@ -148,80 +132,4 @@ Main JS se handle karunga
     </AuthCard>
   );
 }
-
-// import API from "@/lib/api";
-// import { useRouter } from "next/navigation";
-// import { useState } from "react";
-// import { useAuth } from "@/hooks/useAuth";
-
-// export default function LoginPage(){
-//  const [formData, setFormData] = useState({
-//     email: "",
-//     password: "",
-//   });
-
-// const[showPassword,setShowPassword] =useState(false);
-// const[loading,setLoading]=useState(false);
-// const {login}=useAuth();
-
-
-// const router=useRouter() ; 
-
-
-
-// async function handleSubmit(e){
-//   e.preventDefault();
-
-//   const response = await API.post("/login" , formData);
-//   if(response.data.success){
-//     const role = response.data.user.role;
-//     login(response.data.user,response.data.token)
-    
-//     if(role==="admin"){
-//       router.push("/admin/dashboard");
-//     }
-//     else {
-//       router.push("/resident/dashboard")
-//     }
-//   }
-//   else {
-//     router.push("/");
-//     return;
-//   }
-
-// }
-
-//   return(
-//     <div>
-
-//    <form onSubmit={handleSubmit}>
-//        <input 
-//       type="text"
-//       placeholder="Enter your email"
-//       required
-//       value={formData.email}
-//       name="email"
-//       onChange={(e)=>setFormData({...formData,email:e.target.value})}
-//       />
-
-
-//        <input 
-//       type={showPassword ? "text" : "password"}
-//       placeholder="Enter your email"
-//       required
-//       value={formData.password}
-//       name="password"
-//       onChange={(e)=>setFormData({...formData,password:e.target.value})}
-//       />
-
-//       <button >{loading? "Loading...." :"Submit to login"}</button>
-  
-//    </form>
-//      </div>
-//   )
-
-   
-// }
-
-
 
