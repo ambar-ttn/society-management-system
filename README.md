@@ -50,32 +50,6 @@ The system provides separate dashboards for Admin and Residents with role-based 
 - Subscription History
 - Profile Management
 
----
-
-## Project Structure
-society-management-system
-│
-├── frontend
-│ ├── app
-│ ├── components
-│ ├── hooks
-│ ├── lib
-│ ├── public
-│ └── package.json
-│
-├── backend
-│ ├── config
-│ ├── controllers
-│ ├── routes
-│ ├── middlewares
-│ ├── jobs
-│ ├── server.js
-│ └── package.json
-│
-└── README.md
-
-
----
 
 ## Database (PostgreSQL Tables)
 
