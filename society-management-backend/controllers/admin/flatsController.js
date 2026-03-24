@@ -7,26 +7,28 @@ export const createFlat = async (req, res) => {
   try {
     const { flat_number, owner_name, owner_email, phone, flat_type } = req.body;
 
+    // Get current subscription amount
+    const getCurrentAmount = async (flat_type) => {
+      const result = await pool.query(
+        `SELECT monthly_amount
+         FROM subscription_plans
+         WHERE flat_type = $1
+         AND effective_to IS NULL
+         LIMIT 1`,
+        [flat_type]
+      );
 
-  const getAmountForMonth = async (flat_type) => {
-  const result = await pool.query(
-    `SELECT monthly_amount
-     FROM subscription_plans
-     WHERE flat_type = $1
-     AND effective_to IS NULL
-     LIMIT 1`,
-    [flat_type]
-  );
+      if (result.rows.length === 0) return null;
+      return result.rows[0].monthly_amount;
+    };
 
-  if (result.rows.length === 0) return null;
-  return result.rows[0].monthly_amount;
-};
-
+    // Check flat
     const flatResult = await pool.query(
       "SELECT * FROM flats WHERE flat_number = $1",
       [flat_number]
     );
 
+    // Check user
     const userResult = await pool.query(
       "SELECT id FROM users WHERE email = $1",
       [owner_email]
@@ -34,6 +36,7 @@ export const createFlat = async (req, res) => {
 
     let ownerId;
 
+    // Create user if not exists
     if (userResult.rows.length === 0) {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash("pass123", salt);
@@ -53,6 +56,7 @@ export const createFlat = async (req, res) => {
 
     let flatId;
 
+    // If flat exists
     if (flatResult.rows.length > 0) {
       const existingFlat = flatResult.rows[0];
 
@@ -63,6 +67,7 @@ export const createFlat = async (req, res) => {
         });
       }
 
+      // Same owner → activate
       if (existingFlat.owner_id === ownerId) {
         await pool.query(
           `UPDATE flats SET is_active = true WHERE flat_number = $1`,
@@ -70,7 +75,9 @@ export const createFlat = async (req, res) => {
         );
 
         flatId = existingFlat.id;
-      } else {
+      } 
+      else {
+        // Transfer ownership
         const updatedFlat = await pool.query(
           `UPDATE flats
            SET owner_id = $1,
@@ -85,7 +92,9 @@ export const createFlat = async (req, res) => {
 
         flatId = updatedFlat.rows[0].id;
       }
-    } else {
+    } 
+    else {
+      // Create new flat
       const newFlat = await flatService.createFlat({
         flat_number,
         owner_id: ownerId,
@@ -97,7 +106,7 @@ export const createFlat = async (req, res) => {
       flatId = newFlat.id;
     }
 
-
+    // Get last monthly record
     const lastPayment = await pool.query(
       `SELECT month, year
        FROM monthly_records
@@ -117,13 +126,20 @@ export const createFlat = async (req, res) => {
         month = 1;
         year++;
       }
-    } else {
+    } 
+    else {
+      // Start from next month
       const today = new Date();
-      month = today.getMonth() + 1;
+      month = today.getMonth() + 2;
       year = today.getFullYear();
+
+      if (month === 13) {
+        month = 1;
+        year++;
+      }
     }
 
-  
+    // Check monthly record exists
     const checkMonthly = await pool.query(
       `SELECT * FROM monthly_records
        WHERE flat_id = $1 AND month = $2 AND year = $3`,
@@ -131,7 +147,7 @@ export const createFlat = async (req, res) => {
     );
 
     if (checkMonthly.rows.length === 0) {
-      const amount = await getAmountForMonth(flat_type, year, month);
+      const amount = await getCurrentAmount(flat_type);
 
       await pool.query(
         `INSERT INTO monthly_records (flat_id, month, year, amount, status)
@@ -145,6 +161,7 @@ export const createFlat = async (req, res) => {
       message: "Flat created / activated successfully",
       flat_id: flatId,
     });
+
   } catch (error) {
     console.error("CREATE FLAT ERROR:", error.message);
     res.status(500).json({
