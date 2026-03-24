@@ -3,15 +3,14 @@ import API from "@/lib/api";
 import toast from "react-hot-toast";
 
 export default function FlatFormModal({ flat, onClose, refresh }) {
-  const [formData, setFormData] = useState(
-    flat || {
-      flat_number: "",
-      owner_name: "",
-      owner_email: "",
-      phone: "",
-      flat_type: "2BHK",
-    }
-  );
+const [formData, setFormData] = useState({
+  flat_number: flat?.flat_number || "",
+  owner_name: flat?.owner_name || "",
+  owner_email: flat?.owner_email || "",
+  phone: flat?.phone || "",
+  flat_type: flat?.flat_type || "2BHK",
+});
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();

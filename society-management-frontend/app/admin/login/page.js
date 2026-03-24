@@ -61,11 +61,10 @@ export default function LoginPage() {
           onError={() => toast.error("Google login failed")}
         />
       </div>
-
-      <p className="text-center text-gray-400 text-sm mt-6">
-        Dont have an account?{" "}
-       <p>Get permit from db admin</p>
-      </p>
+<div className="text-center text-gray-400 text-sm mt-6">
+  <p>Dont have an account?</p>
+  <p>Get permit from db admin</p>
+</div>
     </AuthCard>
   );
 }

@@ -11,5 +11,4 @@ const pool = new Pool({
 export default pool;
 
 
-// pg is a package used to connect my server and database (postgresql) 
 
