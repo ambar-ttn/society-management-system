@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { LogOut, Loader2 } from "lucide-react";
-import API from "@/lib/api";
 import toast from "react-hot-toast";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -17,7 +16,6 @@ export default function Sidebar({ links, title, subtitle, letter }) {
   const handleLogout = async () => {
     setLoading(true);
     try {
-      await API.post("/logout");
       logout();
       toast.success("Logged out successfully");
       router.push("/");
