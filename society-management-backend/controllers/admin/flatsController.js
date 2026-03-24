@@ -3,88 +3,153 @@ import flatService from "../../services/flatService.js";
 import bcrypt from 'bcrypt';
 import authService from "../../services/authService.js";
 
-export const createFlat = async (req,res)=>{
- try{
+export const createFlat = async (req, res) => {
+  try {
     const { flat_number, owner_name, owner_email, phone, flat_type } = req.body;
 
-    const exists = await flatService.checkFlatNumberExists(flat_number);
-    if(exists){
-      return res.status(400).json({
-        success:false,
-        message:"Flat number already exists"
-      });
-    }
 
-    // Check if user exists with this email
+  const getAmountForMonth = async (flat_type) => {
+  const result = await pool.query(
+    `SELECT monthly_amount
+     FROM subscription_plans
+     WHERE flat_type = $1
+     AND effective_to IS NULL
+     LIMIT 1`,
+    [flat_type]
+  );
+
+  if (result.rows.length === 0) return null;
+  return result.rows[0].monthly_amount;
+};
+
+    const flatResult = await pool.query(
+      "SELECT * FROM flats WHERE flat_number = $1",
+      [flat_number]
+    );
+
     const userResult = await pool.query(
-      'SELECT id FROM users WHERE email = $1',
+      "SELECT id FROM users WHERE email = $1",
       [owner_email]
     );
-    
+
     let ownerId;
 
-    // If user doesn't exist, create new resident user
     if (userResult.rows.length === 0) {
-      // Hash default password "pass123"
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash("pass123", salt);
-      
 
-      // Create new user
       const newUser = await pool.query(
-        `INSERT INTO users (name, email, password, role) 
-         VALUES ($1, $2, $3, $4) 
+        `INSERT INTO users (name, email, password, role)
+         VALUES ($1, $2, $3, $4)
          RETURNING id`,
-        [owner_name, owner_email, hashedPassword, 'resident']
+        [owner_name, owner_email, hashedPassword, "resident"]
       );
-    
-     await authService.createUserProfile(newUser.rows[0].id);
 
-      
+      await authService.createUserProfile(newUser.rows[0].id);
       ownerId = newUser.rows[0].id;
     } else {
-      // Use existing user
       ownerId = userResult.rows[0].id;
     }
 
-    // Create the flat with owner_id
-    const newFlat = await flatService.createFlat({
+    let flatId;
 
-      flat_number, 
-      owner_id: ownerId, 
-      phone, 
-      flat_type,
-      owner_name
-    });
-   console.log(newFlat);
-    const am = await pool.query(`SELECT monthly_amount  as amount from subscription_plans where flat_type=$1`,[newFlat.flat_type])
-    const amount = am.rows[0].amount;
-    console.log(amount);
+    if (flatResult.rows.length > 0) {
+      const existingFlat = flatResult.rows[0];
 
-    // Get current month and year
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1;
-    const currentYear = currentDate.getFullYear();
+      if (existingFlat.is_active === true) {
+        return res.status(400).json({
+          success: false,
+          message: "Flat already active",
+        });
+      }
 
-    // Create monthly record with pending status
-    await pool.query(
-      `INSERT INTO monthly_records (flat_id, month, amount, status, year) 
-       VALUES ($1, $2, $3, $4, $5)`,
-      [newFlat.id, currentMonth, amount, 'pending', currentYear]
+      if (existingFlat.owner_id === ownerId) {
+        await pool.query(
+          `UPDATE flats SET is_active = true WHERE flat_number = $1`,
+          [flat_number]
+        );
+
+        flatId = existingFlat.id;
+      } else {
+        const updatedFlat = await pool.query(
+          `UPDATE flats
+           SET owner_id = $1,
+               phone = $2,
+               flat_type = $3,
+               owner_name = $4,
+               is_active = true
+           WHERE flat_number = $5
+           RETURNING id`,
+          [ownerId, phone, flat_type, owner_name, flat_number]
+        );
+
+        flatId = updatedFlat.rows[0].id;
+      }
+    } else {
+      const newFlat = await flatService.createFlat({
+        flat_number,
+        owner_id: ownerId,
+        phone,
+        flat_type,
+        owner_name,
+      });
+
+      flatId = newFlat.id;
+    }
+
+
+    const lastPayment = await pool.query(
+      `SELECT month, year
+       FROM monthly_records
+       WHERE flat_id = $1
+       ORDER BY year DESC, month DESC
+       LIMIT 1`,
+      [flatId]
     );
 
+    let month, year;
+
+    if (lastPayment.rows.length > 0) {
+      month = lastPayment.rows[0].month + 1;
+      year = lastPayment.rows[0].year;
+
+      if (month === 13) {
+        month = 1;
+        year++;
+      }
+    } else {
+      const today = new Date();
+      month = today.getMonth() + 1;
+      year = today.getFullYear();
+    }
+
+  
+    const checkMonthly = await pool.query(
+      `SELECT * FROM monthly_records
+       WHERE flat_id = $1 AND month = $2 AND year = $3`,
+      [flatId, month, year]
+    );
+
+    if (checkMonthly.rows.length === 0) {
+      const amount = await getAmountForMonth(flat_type, year, month);
+
+      await pool.query(
+        `INSERT INTO monthly_records (flat_id, month, year, amount, status)
+         VALUES ($1, $2, $3, $4, 'pending')`,
+        [flatId, month, year, amount]
+      );
+    }
+
     res.status(201).json({
-      success:true,
-      message:"Flat created successfully with pending monthly record",
-      data:newFlat
+      success: true,
+      message: "Flat created / activated successfully",
+      flat_id: flatId,
     });
-
-  }catch(error){
-
-    console.error(error);
+  } catch (error) {
+    console.error("CREATE FLAT ERROR:", error.message);
     res.status(500).json({
-      success:false,
-      message:"Error creating flat"
+      success: false,
+      message: error.message,
     });
   }
 };
