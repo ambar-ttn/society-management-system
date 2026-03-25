@@ -5,12 +5,9 @@ import "dotenv/config";
 export const auth = (req,res,next)=>{
   try{
 
-    console.log("Cookies:", req.cookies);
-    console.log("Auth Header:", req.headers.authorization);
 
-    const token =req.headers.authorization?.split(" ")[1] || req.body?.token || req.cookies?.token ;
+    const token =req.headers.authorization?.split(" ")[1] || req.body?.token ;
 
-    console.log("TOKEN:", token);
 
     if(!token){
       return res.status(401).json({
@@ -22,8 +19,7 @@ export const auth = (req,res,next)=>{
     console.log("SERVER TIME:", Math.floor(Date.now()/1000));
 
 const dec = jwt.decode(token);
-console.log("TOKEN IAT:", dec?.iat);
-console.log("TOKEN EXP:", dec?.exp);
+
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log(decoded);

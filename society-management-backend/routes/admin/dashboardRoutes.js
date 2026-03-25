@@ -7,3 +7,5 @@ import { auth, isAdmin } from "../../middlewares/auth.js";
 router.get("/dashboard", auth, isAdmin, getAdminDashboard);
 
 export default router;
+
+

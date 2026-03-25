@@ -81,7 +81,7 @@ const paymentService = {
         );
         return result.rowCount;
     },
-
+//result.rowCount = kitni rows update hui
     // insert into monthly records
     insertMonthlyRecord: async (flat_id, month, year, amount) => {
         await pool.query(
@@ -89,41 +89,5 @@ const paymentService = {
             [flat_id, month, year, amount]
         );
     },
-
-    // get all payments with filters
-    getAllPayments: async (filters) => {
-        const { flat_id, month, year } = filters;
-
-        let query = `
-            SELECT p.*, f.flat_number, f.owner_name 
-            FROM payments p
-            JOIN flats f ON f.id = p.flat_id
-        `;
-        let params = [];
-        let conditions = [];
-
-        // Filters add karo
-        if (flat_id) {
-            conditions.push(`p.flat_id = $${params.length + 1}`);
-            params.push(flat_id);
-        }
-        if (month) {
-            conditions.push(`p.month = $${params.length + 1}`);
-            params.push(month);
-        }
-        if (year) {
-            conditions.push(`p.year = $${params.length + 1}`);
-            params.push(year);
-        }
-
-        if (conditions.length > 0) {
-            query += " WHERE " + conditions.join(" AND ");
-        }
-
-        query += " ORDER BY p.created_at DESC";
-
-        const result = await pool.query(query, params);
-        return result.rows;
-    }
-};
+}
 export default paymentService;

@@ -18,6 +18,7 @@ export const getReport = async (req,res)=>{
 
       const parser = new Parser();
       const csv = parser.parse(reportData.payment_mode_breakdown);
+      // json object --> csv string
 
       res.header("Content-Type","text/csv");
       res.attachment("financial-report.csv");

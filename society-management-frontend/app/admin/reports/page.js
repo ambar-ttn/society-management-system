@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import axios from "axios";
 import StatCard from "@/components/StatCard";
 import { Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
@@ -54,6 +53,24 @@ export default function ReportsPage() {
           responseType: "blob",
         }
       );
+// Axios ko bol rahe ho response JSON nahi, file/binary data aayegi.
+
+/*
+Step 3 — Blob kya hota hai?
+new Blob([response.data])
+Blob = Binary Large Object = file jaisa object browser memory me
+
+Matlab:
+Backend file → Browser memory → Blob object
+Ye browser me ek temporary URL banata hai:
+
+blob:http://localhost:3000/8a7sd9as8d7a9sd
+
+Is URL ko open karoge → file open/download ho jayegi.
+Blob basically ek temporary file object hai.
+
+
+*/
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");

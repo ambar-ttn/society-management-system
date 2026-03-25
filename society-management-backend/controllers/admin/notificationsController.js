@@ -18,7 +18,7 @@ const sendPushNotification = async (title, message, user_id = null) => {
       payload.included_segments = ["Subscribed Users"];
     }
  
-    console.log("📤 Sending Push Payload:", JSON.stringify(payload, null, 2));
+    console.log(" Sending Push Payload:", JSON.stringify(payload, null, 2));
  
     const response = await axios.post(
       "https://api.onesignal.com/notifications",
@@ -92,7 +92,6 @@ export const getAllNotifications = async (req, res) => {
     const limit = 5;
     const offset = (page - 1) * limit;
 
-    // total notifications count
     const countResult = await pool.query(`SELECT COUNT(*) FROM notifications`);
     const total = parseInt(countResult.rows[0].count);
 

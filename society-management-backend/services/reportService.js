@@ -75,14 +75,14 @@ const reportService = {
             totalPaid,
             totalPending,
             paymentsByMode,
-            monthlyTrend,
+            // monthlyTrend,
             recentPayments
         ] = await Promise.all([
             reportService.getTotalFlats(),
             reportService.getPaidPayments(month, year),
             reportService.getPendingPayments(month, year),
             reportService.getPaymentsByMode(month, year),
-            reportService.getMonthlyTrend(year),
+            // reportService.getMonthlyTrend(year),
             reportService.getRecentPayments()
         ]);
 
@@ -98,12 +98,12 @@ const reportService = {
                 count: parseInt(row.count),
                 amount: parseFloat(row.total)
             })),
-            monthly_trend: monthlyTrend.map(row => ({
-                month: row.month,
-                year: row.year,
-                paid: parseInt(row.paid_count),
-                collected: parseFloat(row.collected)
-            })),
+            // monthly_trend: monthlyTrend.map(row => ({
+            //     month: row.month,
+            //     year: row.year,
+            //     paid: parseInt(row.paid_count),
+            //     collected: parseFloat(row.collected)
+            // })),
             recent_transactions: recentPayments
         };
     }

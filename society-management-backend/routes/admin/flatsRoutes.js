@@ -15,12 +15,17 @@ import { auth, isAdmin } from "../../middlewares/auth.js";
 router.post("/flats", auth, isAdmin, createFlat);
 
 
+
 // deleting a flat
 router.delete("/flats/:id", auth, isAdmin, deleteFlat);
 
 
+
+
 // updating a flat
 router.put("/flats/:id", auth, isAdmin, updateFlat);
+
+
 
 
 // getting flat information

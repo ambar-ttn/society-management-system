@@ -35,7 +35,7 @@ export default function OneSignalInit() {
           });
           console.log("OneSignal initialized");
         } catch (initErr) {
-          console.log("ℹ️ OneSignal already initialized, continuing...");
+          console.log("ℹ OneSignal already initialized, continuing...");
         }
 
         //  KEY: Link this subscription to your DB user ID as external_id
@@ -70,11 +70,11 @@ export default function OneSignalInit() {
         }
 
         if (!playerId) {
-          console.warn("⚠️ No Player ID — permission likely denied.");
+          console.warn("No Player ID — permission likely denied.");
           return;
         }
 
-        console.log("📱 Player ID:", playerId);
+        console.log(" Player ID:", playerId);
 
         // Save to backend (kept for reference, targeting now done via external_id)
         await API.post("/auth/update-onesignal-id", {

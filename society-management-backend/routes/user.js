@@ -2,7 +2,7 @@ import express from "express";
 const router = express.Router();
 
 import { signup, login, googleAuth, updateOneSignalId } from "../controllers/authController.js";
-import { auth, isAdmin, isResident } from "../middlewares/auth.js";
+import { auth} from "../middlewares/auth.js";
 
 router.post('/signup', signup);
 router.post('/login', login);

@@ -175,7 +175,7 @@ export const getFlats = async (req,res)=>{
   try{
 // req.query always returns a string value ..
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    const limit =  10;
 
     const offset = (page - 1) * limit;
 

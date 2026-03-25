@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from "express";
-console.log("ENV URL:", process.env.DB_URL);
+// console.log("ENV URL:", process.env.DB_URL);
 import cors from "cors"; // (cross origin resource sharing --> for sending the cookies or tokens between different domains (as backend and frontend are running on differnt ports ) )
 
 import flatRoutes from './routes/admin/flatsRoutes.js';
@@ -10,7 +10,6 @@ import paymentsRoutes from "./routes/admin/paymentsRoutes.js";
 import notificationRoutes from "./routes/admin/notificationsRoutes.js";
 import reportsRoutes from "./routes/admin/reportsRoutes.js";
 import adminDashboardRoute from "./routes/admin/dashboardRoutes.js";
-import loginRoute from "./routes/admin/login.js";
 import userRoutes from "./routes/admin/userRoutes.js";
 
 import user from './routes/user.js';
@@ -23,11 +22,13 @@ import residentOneSignalRoutes from "./routes/resident/onesignalRoutes.js";
 import profileRoutes from "./routes/profile.js";
 import "./jobs/generateMonthlyRecords.js";
 
+
 import pool from "./config/db.js";
-import cookieParser from "cookie-parser";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+
 
 // CORS configuration
 app.use(cors({
@@ -37,7 +38,6 @@ app.use(cors({
 
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser()); 
 
 // Routes for the admin only
 app.use("/api/v1/admin", flatRoutes);
@@ -47,7 +47,6 @@ app.use("/api/v1/admin", paymentsRoutes);
 app.use("/api/v1/admin", notificationRoutes);
 app.use("/api/v1/admin", reportsRoutes);
 app.use("/api/v1/admin", adminDashboardRoute);
-app.use("/api/v1/admin", loginRoute);
 app.use("/api/v1/admin", userRoutes);
 
 // Routes related to user (resident)
@@ -75,7 +74,9 @@ app.get("/", (req, res) => {
   res.send("Server is running");
 });
 
-console.log(process.env.DB_URL);
+// console.log(process.env.DB_URL);
+
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

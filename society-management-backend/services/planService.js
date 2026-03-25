@@ -23,8 +23,8 @@ const planService = {
             [flat_type]
         );
     },
-// = current date ko month ke start pe le aata hai
-    // UPDATE PLAN - create new plan
+// = current date ko month ke start pe le aata hai ( it cuts the date and time to a specific unit such aas year satr month statr etc)
+    // UPDATE PLAN - create new plan 
     createNewPlan: async (flat_type, monthly_amount) => {
         const result = await pool.query(
             `INSERT INTO subscription_plans

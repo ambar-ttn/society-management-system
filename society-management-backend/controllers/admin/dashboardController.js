@@ -6,7 +6,7 @@ try {
 
     const dashboardData = await dashboardService.getAdminDashboardData();
 
-    res.json({
+    res.status(200).json({
         success: true,
         dashboard: dashboardData
     });
@@ -20,3 +20,4 @@ try {
     })
 }
 };
+

@@ -6,7 +6,7 @@ import { auth } from "../middlewares/auth.js";
 import {
  getProfile,
  updateProfile,
- deleteProfile
+ 
 } from "../controllers/profileController.js";
 
 
@@ -14,6 +14,5 @@ import {
 
 router.get("/profile", auth, getProfile);
 router.put("/profile", auth, updateProfile);
-router.delete("/profile", auth, deleteProfile);
 
 export default router;
